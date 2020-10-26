@@ -1,0 +1,9 @@
+
+{
+  "spec": "src/test/js/**/[A-Z]*Spec.js"
+, "diff": true
+, "extension": ["js"]
+, "reporter": "spec"
+, "ui": "bdd"
+, "parallel": true
+}

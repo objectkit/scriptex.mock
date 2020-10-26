@@ -1,0 +1,64 @@
+{
+  "name": "@objectkit/scriptex.mock",
+  "version": "1.0.0-beta.1",
+  "description": "A mock object library for the Scripter MIDI-FX Plugin",
+  "main": "./lib/scriptex.mock.js",
+  "exports": {
+    ".": "./lib/scriptex.mock.js"
+  },
+  "type": "module",
+  "files": [
+    "lib/scriptex.mock.js",
+    "doc"
+  ],
+  "scripts": {
+    "prepare": "install-peers",
+    "pretest": "npm run lint && npm run build",
+    "test": "mocha --config env/mocha/conf.json",
+    "lint": "npm run lint/main && npm run lint/test",
+    "lint/main": "eslint src/main/**/*.js -c env/eslint/conf.main.json",
+    "lint/test": "eslint src/test/**/*.js -c env/eslint/conf.test.json",
+    "doc": "jsdoc -c env/jsdoc/conf.json -d ./doc",
+    "clean": "rm -rf lib doc",
+    "watch": "npm run watch/build & npm run watch/test",
+    "watch/build": "rollup -w -c env/rollup/conf.js",
+    "watch/test": "mocha --config env/mocha/conf.watch.json || exit 0",
+    "build": "npm run build/lib && npm run doc",
+    "build/lib": "rollup -c env/rollup/conf.js",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "david@objecktit.com",
+  "license": "Apache-2.0",
+  "keywords": [
+    "MIDI",
+    "logic pro x",
+    "mainstage",
+    "scripter",
+    "midi-fx",
+    "plugin",
+    "library",
+    "es6",
+    "mocking"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "@objectkit/scriptex": ">=1.0.0-rc.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-multi-entry": "4.0.0",
+    "chai": "4.2.0",
+    "eslint": "7.10.0",
+    "eslint-plugin-no-only-tests": "2.4.0",
+    "install-peers-cli": "2.2.0",
+    "jsdoc": "3.6.6",
+    "minami": "1.2.3",
+    "mocha": "8.1.3",
+    "rollup": "2.28.2",
+    "rollup-plugin-includepaths": "0.2.4",
+    "rollup-plugin-terser": "7.0.2",
+    "sinon": "9.2.0",
+    "uuid": "8.3.1"
+  }
+}

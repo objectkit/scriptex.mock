@@ -181,7 +181,7 @@ class VirtualScripterEnvironment {
    * @throws "SystemUnavailable"
    * @param  {Function} pluginClass A plugin class constructor
    * @param  {Array}  [ctorArgs=[]] Any arguments to pass to the plugin constructor
-   * @return {Object}               Metadata from the deployment
+   * @return {Object}               Reference captures from the deployment
    * @return {Object.plugin}        The plugin instance
    * @return {Object.system}        The system instance or global scope
    * @return {Object.api}           The deployments system integration keys

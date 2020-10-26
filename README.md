@@ -6,25 +6,25 @@ A bare bones set of interfaces and actors to mock the Scripter MIDI-FX Plugin en
 
 ### Interfaces
 - [Scripter](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/system/Scripter.js)
-- [TimingInfo](#)
-- [MIDI](#)
-- [Event](#)
-- [ChannelPressure](#)
-- [ControlChange](#)
-- [Note](#)
-- [NoteOn](#)
-- [NoteOff](#)
-- [PitchBend](#)
-- [PolyPressure](#)
-- [ProgramChange](#)
-- [TargetEvent](#)
+- [TimingInfo](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/system/TimingInfo.js)
+- [MIDI](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/system/MIDI.js)
+- [Event](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/Event.js)
+- [ChannelPressure](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/ChannelPressure.js)
+- [ControlChange](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/ControlChange.js)
+- [Note](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/Note.js)
+- [NoteOn](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/NoteOn.js)
+- [NoteOff](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/NoteOff.js)
+- [PitchBend](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/PitchBend.js)
+- [PolyPressure](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/PolyPressure.js)
+- [ProgramChange](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/ProgramChange.js)
+- [TargetEvent](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/event/TargetEvent.js)
 
 ### Actors
-#### VirtualScripter
+#### [VirtualScripter](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/system/support/VirtualScripter.js)
 A bare bones Scripter emulation.
-#### VirtualScripterEnvironment
+#### [VirtualScripterEnvironment](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/system/support/VirtualScripterEnvironment.js)
 A bare bones virtual Scripter environment
-#### DeployPluginHarness
+#### [DeployPluginHarness](https://github.com/objectkit/scriptex.mock/blob/main/src/main/js/com/objectkit/scriptex/mock/plugin/support/DeployPluginHarness.js)
 A convenience tool for capturing api, plugin and system references arising through deployment.
 
 ## Example
@@ -124,4 +124,4 @@ describe(`Microtune Integration`, () => {
 })
 ```
 
-Checkout the [Microtune](#) scriptex demonstrator project for a concreate example of the above, or checkout the [Scriptex project template](#) to apply similar use cases to your own plugin development workflow.
+Checkout the [Microtune](https://github.com/objectkit/scriptex.plugin.microtune) project for a conrete example of the above, or checkout a copy of the [Scriptex plugin project template](https://github.com/objectkit/scriptex.plugin.template) to apply similar use cases to your own plugin development workflow.

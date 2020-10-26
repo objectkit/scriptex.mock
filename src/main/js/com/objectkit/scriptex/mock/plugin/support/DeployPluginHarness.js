@@ -2,11 +2,7 @@ import { Scriptex } from "@objectkit/scriptex"
 
 /**
  * @classDesc
- * DeployPluginHarness is a faithful reproduction of the Plugin.deploy method
- * expecially designed to faciliate testing.
- *
- * Its sole merit is that it provides a single method by which the plugin instance,
- * system and integration API are returned in one invocation.
+ * DeployPluginHarness is a testing utility for deploying plugins in a structure way
  *
  * @example
  *  context(`Given BespokePlugin`, () => {
@@ -51,10 +47,10 @@ class DeployPluginHarness {
    *  Arguments to pass to the Plugin constructor
    * @param  {?Object} [system]
    *  The system to deploy to
-   * @return {Object}
-   * @return {Object.plugin}
-   * @return {Object.system}
-   * @return {Object.bridge}
+   * @return {Object}               Reference captures from the deployment
+   * @return {Object.plugin}        The plugin instance
+   * @return {Object.system}        The system instance or global scope
+   * @return {Object.api}           The deployments system integration keys
    * @see {@link Plugin.deploy}
    */
   deployPlugin(pluginClass, system=pluginClass.SYSTEM, ctorArgs=[]){

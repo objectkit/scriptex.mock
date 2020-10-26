@@ -7,11 +7,5 @@
   "extends":"eslint:recommended",
   "parserOptions": {
     "sourceType": "module"
-  },
-  "plugins": [
-    "no-only-tests"
-  ],
-  "rules": {
-
   }
 }

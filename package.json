@@ -1,6 +1,6 @@
 {
   "name": "@objectkit/scriptex.mock",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.0",
   "description": "A mock object library for the Scripter MIDI-FX Plugin",
   "main": "./lib/scriptex.mock.js",
   "exports": {
@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "prepare": "install-peers",
-    "pretest": "npm run lint && npm run build",
+    "pretest": "npm run lint && npm run build/lib",
     "test": "mocha --config env/mocha/conf.json",
     "lint": "npm run lint/main && npm run lint/test",
     "lint/main": "eslint src/main/**/*.js -c env/eslint/conf.main.json",
@@ -27,7 +27,15 @@
     "build/lib": "rollup -c env/rollup/conf.js",
     "prepublishOnly": "npm run build"
   },
-  "author": "david@objecktit.com",
+  "author": "David Foley <david@objectkit.com>",
+  "homepage": "https://objectkit.github.io/scriptex",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/objectkit/scriptex.mock.git"
+  },
+  "bugs": {
+    "url": "https://github.com/objectkit/scriptex.mock/issues"
+  },
   "license": "Apache-2.0",
   "keywords": [
     "MIDI",
@@ -59,8 +67,5 @@
     "rollup-plugin-terser": "7.0.2",
     "sinon": "9.2.0",
     "uuid": "8.3.1"
-  },
-  "dependencies": {
-    "t": "0.5.1"
   }
 }

@@ -81,50 +81,70 @@ class VirtualScripterEnvironment {
    * @param {Object} target The ground of the environment.
    */
   constructor (target) {
-    this._installed= false
-    this._system= null
-    this._target= target
+    this.target= target
   }
 
   /**
-   * Determine if the virutal environment has been installed
+   * Determine if the virtual environment has been applied
    * @type {boolean}
-   * @see {@link #install}
+   * @see {@link #applyEnvironment}
    */
-  get installed () {
-    return this._system != null
+  get applied () {
+    return ( null != this._system )
   }
 
   /**
-   * Obtain a reference to the virtual environments host environment
+   * Reference the virtual environments host environment
    * @type {Object}
+   * @throws `TargetAlreadyApplied` the existing #target is in use
+   * @throws `BadTarget` #target must be an instanceof of Object
+   * @throws `TargetMissing` if #target is accessed before being set
    */
+  set target (val) {
+    if (this.applied)
+      throw new Error(`TargetAlreadyApplied`)
+
+    if (null == val || `object` !== typeof(val))
+      throw new TypeError(`BadTarget: ${val}`)
+
+    /* globals console, global */
+    if (global === val)
+      console.warn(`VirtualScripterEnvironment is now using global scope as its environment`)
+
+    this._target= val
+  }
+
   get target () {
-    return this._target
+    const target= this._target;
+    if (null == target) {
+      throw new ReferenceError(`TargetMissing`)
+    }
+    return target
   }
 
   /**
    * Obtain a reference to the internal VirtualScripter instance.
    *
-   * Accessing this when not #installed throws a reference error as
+   * Accessing this when not #applied throws a reference error as
    * the #system is not available.
    *
    * @type {VirtualScripter}
    * @throws "SystemUnavailable"
-   * @see {@link #installed}
+   * @see {@link #applied}
    */
   get system () {
-    if (this.installed)
+    if (this.applied)
       return this._system
     throw new Error(`SystemUnavailable`)
   }
 
   /**
-   * [install description]
+   * Apply the environment by decorating the target virtual environment artefacts.
+   *
    * @return {void}
-   * @see {@link #restore}
+   * @see {@link #unapplyEnvironment}
    */
-  install () {
+  applyEnvironment () {
     const { target } = this
     const sys= this._system= new VirtualScripter()
     const pod= (val) => ({ value: val, configurable: true, enumerable: true })
@@ -176,33 +196,18 @@ class VirtualScripterEnvironment {
   }
 
   /**
-   * Deploy a plugin to the internal VirtualScripter.
    *
-   * @throws "SystemUnavailable"
-   * @param  {Function} pluginClass A plugin class constructor
-   * @param  {Array}  [ctorArgs=[]] Any arguments to pass to the plugin constructor
-   * @return {Object}               Reference captures from the deployment
-   * @return {Object.plugin}        The plugin instance
-   * @return {Object.system}        The system instance or global scope
-   * @return {Object.api}           The deployments system integration keys
-   * @see {@link DeployPluginHarness}
-   * @see {@link #system}
-   */
-  deployPlugin (pluginClass, ctorArgs=[]) {
-    return new DeployPluginHarness()
-      .deployPlugin(pluginClass, this.system, ctorArgs)
-  }
-
-  /**
-   * [restore description]
+   * [unapplyEnvironment description]
    * @return {void}
-   * @see {@link #install}
+   * @see {@link #applyEnvironment}
    */
-  restore () {
-    if (!this.installed)
+  unapplyEnvironment () {
+    /* @todo: rename #unapplyEnvironment to #uninstall */
+    if (!this.applied)
       return
 
     const { target }= this
+    /* @todo: guard against `TypeError: Reflect.defineProperty called on non-object` */
     const del= (key) => {
       if (false === deleteProperty(target, key))
         throw new Error(`UninstallKeyFault: ${key}`)
@@ -240,9 +245,27 @@ class VirtualScripterEnvironment {
     del(`Idle`)
     del(`Reset`)
 
-    /* demarcate the condition that determines the truth of #installed */
+    /* demarcate the condition that determines the truth of #applied */
     this._system= null
     return
+  }
+
+  /**
+   * Deploy a plugin to the internal VirtualScripter.
+   *
+   * @throws "SystemUnavailable"
+   * @param  {Function} pluginClass A plugin class constructor
+   * @param  {Array}  [ctorArgs=[]] Any arguments to pass to the plugin constructor
+   * @return {Object}               Reference captures from the deployment
+   * @return {Object.plugin}        The plugin instance
+   * @return {Object.system}        The system instance or global scope
+   * @return {Object.api}           The deployments system integration keys
+   * @see {@link DeployPluginHarness}
+   * @see {@link #system}
+   */
+  deployPlugin (pluginClass, ctorArgs=[]) {
+    return new DeployPluginHarness()
+      .deployPlugin(pluginClass, this.system, ctorArgs)
   }
 }
 

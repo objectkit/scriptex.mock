@@ -27,8 +27,54 @@ describe(`VirtualScripterEnvironment`, () => {
     sandbox.restore()
   )
 
-  describe(`#install():void throws Error`, () => {
-    context(`Given #install is invoked `, () => {
+  describe(`new VirtualScripterEnvironment(target:Object)`, () => {
+    context(`Given a non-object is passed to the "target" parameter`, () => {
+      specify(`Then "BadTarget" is thrown`, () => {
+        assert.throws(() => { new VirtualScripterEnvironment(undefined) }, `BadTarget` )
+      })
+    })
+  })
+
+  describe(`#target and #applied`, () => {
+    context(`Given #target is set and #applied is true`, () => {
+      context(`When #target is set again`, () => {
+        specify(`Then a "TargetAlreadyApplied" error is thrown`, () => {
+
+          const newTarget= () => Object.create(null)
+          const virtual= new VirtualScripterEnvironment(newTarget())
+          const runScenario= () => virtual.target= newTarget()
+
+          assert.isFalse(virtual.applied)
+
+          assert.doesNotThrow( runScenario )
+
+          {
+            virtual.applyEnvironment()
+          }
+
+          assert.isTrue(virtual.applied)
+          assert.throws( runScenario, `TargetAlreadyApplied`)
+
+          {
+            virtual.unapplyEnvironment()
+          }
+
+          assert.isFalse(virtual.applied)
+          assert.doesNotThrow( runScenario )
+
+          {
+            virtual.applyEnvironment()
+          }
+
+          assert.isTrue(virtual.applied)
+          assert.throws( runScenario, `TargetAlreadyApplied`)
+        })
+      })
+    })
+  })
+
+  describe(`#applyEnvironment():void throws Error`, () => {
+    context(`Given #applyEnvironment is invoked `, () => {
       context(`When #target is defined`, () => {
         describe(`Then #target is decorated with an emulated Scripter API`, () => {
 
@@ -37,70 +83,70 @@ describe(`VirtualScripterEnvironment`, () => {
           specify(`#ChannelPressure`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.ChannelPressure, ChannelPressure)
           })
           specify(`#ControlChange`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.ControlChange, ControlChange)
           })
           specify(`#Event`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.Event, Event)
           })
           specify(`#NoteOff`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.NoteOff, NoteOff)
           })
           specify(`#NoteOn`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.NoteOn, NoteOn)
           })
           specify(`#Note`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.Note, Note)
           })
           specify(`#PitchBend`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.PitchBend, PitchBend)
           })
           specify(`#PolyPressure`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.PolyPressure, PolyPressure)
           })
           specify(`#ProgramChange`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.ProgramChange, ProgramChange)
           })
           specify(`#TargetEvent`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.strictEqual(obj.TargetEvent, TargetEvent)
           })
@@ -110,7 +156,7 @@ describe(`VirtualScripterEnvironment`, () => {
           specify(`#MIDI`, () => {
             const obj= Object.create(null)
             {
-              new VirtualScripterEnvironment(obj).install()
+              new VirtualScripterEnvironment(obj).applyEnvironment()
             }
             assert.instanceOf(obj.MIDI, MIDI)
           })
@@ -122,7 +168,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             obj.UpdatePluginParameters()
             sandbox.assert.calledOnce(uppSpy)
@@ -136,7 +182,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             obj.SetParameter(0, 0)
             sandbox.assert.calledOnce(setSpy)
@@ -150,7 +196,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             obj.GetParameter(0, 0)
             sandbox.assert.calledOnce(getSpy)
@@ -164,7 +210,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             obj.Trace(0)
             sandbox.assert.calledOnce(traceSpy)
@@ -179,7 +225,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             obj.SendMIDIEventNow(evt)
             sandbox.assert.calledOnce(spy)
@@ -194,7 +240,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             obj.SendMIDIEventAtBeat(evt, 0)
             sandbox.assert.calledOnce(spy)
@@ -209,7 +255,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             obj.SendMIDIEventAfterBeats(evt, 0)
             sandbox.assert.calledOnce(spy)
@@ -224,7 +270,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             obj.SendMIDIEventAfterMilliseconds(evt, 0)
             sandbox.assert.calledOnce(spy)
@@ -240,7 +286,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             const sys= env.system // virtualScripter instance
 
@@ -261,7 +307,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             const sys= env.system
 
@@ -278,7 +324,7 @@ describe(`VirtualScripterEnvironment`, () => {
             const obj= Object.create(null)
             const env= new VirtualScripterEnvironment(obj)
             {
-              env.install()
+              env.applyEnvironment()
             }
             const sys= env.system
 
@@ -298,7 +344,7 @@ describe(`VirtualScripterEnvironment`, () => {
           const target= Object.create(null)
           const env= new VirtualScripterEnvironment(target)
           {
-            env.install()
+            env.applyEnvironment()
           }
           const sys= env.system
 
@@ -323,21 +369,21 @@ describe(`VirtualScripterEnvironment`, () => {
     })
   })
 
-  describe(`#restore():void`, () => {
-    context(`Given #install has decorated the environment with Scripter`, () => {
-      specify(`Then #restore removes all decorated properties`, () => {
+  describe(`#unapplyEnvironment():void`, () => {
+    context(`Given #applyEnvironment has decorated the environment with Scripter`, () => {
+      specify(`Then #unapplyEnvironment removes all decorated properties`, () => {
         const fixture= Object.create(null)
         const virtual= new VirtualScripterEnvironment(fixture)
 
         {
-          virtual.install()
+          virtual.applyEnvironment()
         }
 
         for (const key of VirtualScripterEnvironment.KEYS)
           assert.property(fixture, key)
 
         {
-          virtual.restore()
+          virtual.unapplyEnvironment()
         }
 
         for (const key of VirtualScripterEnvironment.KEYS)
@@ -353,7 +399,7 @@ describe(`VirtualScripterEnvironment`, () => {
         const spy= sandbox.spy(DeployPluginHarness.prototype, `deployPlugin`)
         const env= new VirtualScripterEnvironment(obj)
         {
-          env.install()
+          env.applyEnvironment()
         }
         const { system }= env.deployPlugin(DefaultPlugin)
         sandbox.assert.calledOnce(spy)
@@ -363,7 +409,7 @@ describe(`VirtualScripterEnvironment`, () => {
           assert.property(obj, key)
         }
         {
-          env.restore()
+          env.unapplyEnvironment()
         }
       })
     })

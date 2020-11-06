@@ -39,8 +39,7 @@ const buildConf= {
   , MINIFY && terser(terserConf)
   ]
 , external: [
-    `sinon`
-  , `@objectkit/scriptex`
+    `@objectkit/scriptex`
   ]
 }
 

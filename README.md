@@ -28,42 +28,47 @@ A bare bones virtual Scripter environment
 A convenience tool for capturing api, plugin and system references arising through deployment.
 
 ## Example
-Given a new scriptex project with a bespoke plugin source file
+implement a new plugin
 ```js
 import { DefaultPlugin } from "@objectkit/scriptex"
 
-class Microtune extends DefaultPlugin {
+const UNITS_PER_CENT= ( ( 16384 / 4 ) / 100 ) /* 40.96 */
 
-  get params () {
-    return [
-      {
-        ID: `microtune`
-      , name: ` `
-      , minValue: -8192
-      , maxValue: 8191
-      , numberOfSteps: 16383
+class Microtuner extends DefaultPlugin {
+
+  get parameters () {
+    return [{
+      ID: `microtuning`
+      , name: ` m i c r o t u n e r `
+      , type: `lin`
+      , unit: `\u00A2`
+      , minValue: -100
+      , maxValue: 100
+      , numberOfSteps: 200
       , defaultValue: 0
-      }
-    ]
+    }]
   }
 
-  set microtune (val) {
-    this.applyPitchBend(val)
+  set microtuning (cents) {
+    const units= ~~( cents * UNITS_PER_CENT )
+    this.applyPitchBend(units)
+    return
   }
 
   applyPitchBend (val) {
     const bend= new PitchBend()
     bend.value= val
     bend.send()
+    return
   }
 }
 
-export { Microtune }
+export { Microtuner }
 ```
-Then test it in an emulated global Scripter environment
+Then run your tests it in an emulated Scripter staging environment:
 ```js
 import { PitchBend, VirtualScripterEnvironment } from "@objectkit/scriptex.mock"
-import { Microtune } from "path/to/Microtune"
+import { Microtune } from "scriptex.plugin.microtuner"
 
 describe(`Microtune Integration`, () => {
 
@@ -80,8 +85,8 @@ describe(`Microtune Integration`, () => {
   })
 
   describe(`Given MicrotunePlugin is integrated with Scripter`, () => {
-    describe(`When SetParameter sets the value of #microtune`, () => {
-      describe(`Then #microtune sets the value of PitchBend#value`, () => {
+    describe(`When SetParameter sets the value of #microtuning`, () => {
+      describe(`Then #microtuning sets the value of PitchBend#value`, () => {
         specify(`And the PitchBend is immediately sent.`, () => {
 
           MicrotunePlugin.CONFIGURABLE= true
@@ -123,5 +128,9 @@ describe(`Microtune Integration`, () => {
   })
 })
 ```
+## Resources
+- Review the [Microtuner plugin project](https://github.com/objectkit/scriptex.plugin.microtuner) for a concrete example of the above.
+- Clone the [Scriptex plugin project template](https://github.com/objectkit/scriptex.plugin.template) to develop and test your own plugins with the same workflow.
 
-Checkout the [Microtune](https://github.com/objectkit/scriptex.plugin.microtune) project for a conrete example of the above, or checkout a copy of the [Scriptex plugin project template](https://github.com/objectkit/scriptex.plugin.template) to apply similar use cases to your own plugin development workflow.
+## Donation
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/paypalme/objectkit)

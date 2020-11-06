@@ -76,29 +76,38 @@ class VirtualScripterEnvironment {
   }
 
   /**
-   * Instantiate a new VirtualScripterEnvironment.
+   * Instantiate a new VirtualScripterEnvironment and define its #target object.
    *
-   * @param {Object} target The ground of the environment.
+   * @param {Object} target The object that VirtualScripterEnvironment will apply Scripter API artefacts to
+   * @see [#applyEnvironment]{@link VirtualScripterEnvironment#applyEnvironment}
+   * @see [#unapplyEnvironment]{@link VirtualScripterEnvironment#unapplyEnvironment}
+   * @see [#target]{@link VirtualScripterEnvironment#target}
    */
   constructor (target) {
     this.target= target
   }
 
   /**
-   * Determine if the virtual environment has been applied
+   * Determine if the virtual environment has been applied to its #target
    * @type {boolean}
-   * @see {@link #applyEnvironment}
+   * @see [#applyEnvironment]{@link VirtualScripterEnvironment#applyEnvironment}
+   * @see [#target]{@link VirtualScripterEnvironment#target}
    */
   get applied () {
     return ( null != this._system )
   }
 
   /**
-   * Reference the virtual environments host environment
+   * A reference to the VirtualScriperEnvironments internal target object. This object is
+   * decorated with artefacts of the Scripter API by #applyEnvironment, and conversely,
+   * is undecorated of the same artefacts by #unapplyEnvironment.
+   *
+   * Best practice is to simply provide this object to the constructor,
+   *
    * @type {Object}
-   * @throws `TargetAlreadyApplied` the existing #target is in use
-   * @throws `BadTarget` #target must be an instanceof of Object
-   * @throws `TargetMissing` if #target is accessed before being set
+   * @throws "TargetAlreadyApplied" the existing #target is in use
+   * @throws "BadTarget" #target must be an instanceof of Object
+   * @throws "TargetMissing" if #target is accessed before being set
    */
   set target (val) {
     if (this.applied)
@@ -123,14 +132,14 @@ class VirtualScripterEnvironment {
   }
 
   /**
-   * Obtain a reference to the internal VirtualScripter instance.
+   * A reference to the internal VirtualScripter instance.
    *
    * Accessing this when not #applied throws a reference error as
    * the #system is not available.
    *
    * @type {VirtualScripter}
    * @throws "SystemUnavailable"
-   * @see {@link #applied}
+   * @see [#applied]{@link VirtualScripterEnvironment#applied}
    */
   get system () {
     if (this.applied)
@@ -139,10 +148,11 @@ class VirtualScripterEnvironment {
   }
 
   /**
-   * Apply the environment by decorating the target virtual environment artefacts.
+   * Apply the environment by decorating #target with artefacts of the Scripter API.
    *
    * @return {void}
-   * @see {@link #unapplyEnvironment}
+   * @see [#unapplyEnvironment]{@link VirtualScripterEnvironment#unapplyEnvironment}
+   * @see [#target]{@link VirtualScripterEnvironment#target}
    */
   applyEnvironment () {
     const { target } = this
@@ -196,13 +206,14 @@ class VirtualScripterEnvironment {
   }
 
   /**
+   * Unapply the VirtualScripterEnvironment by undecorating #target and reverting it to its
+   * original state.
    *
-   * [unapplyEnvironment description]
    * @return {void}
-   * @see {@link #applyEnvironment}
+   * @see [#applyEnvironment]{@link VirtualScripterEnvironment#applyEnvironment}
+   * @see [#target]{@link VirtualScripterEnvironment#target}
    */
   unapplyEnvironment () {
-    /* @todo: rename #unapplyEnvironment to #uninstall */
     if (!this.applied)
       return
 
@@ -261,7 +272,7 @@ class VirtualScripterEnvironment {
    * @return {Object.system}        The system instance or global scope
    * @return {Object.api}           The deployments system integration keys
    * @see {@link DeployPluginHarness}
-   * @see {@link #system}
+   * @see [#system]{@link VirtualScripterEnvironment#system}
    */
   deployPlugin (pluginClass, ctorArgs=[]) {
     return new DeployPluginHarness()

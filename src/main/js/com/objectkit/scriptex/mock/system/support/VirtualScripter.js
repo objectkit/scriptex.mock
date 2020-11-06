@@ -15,6 +15,8 @@ import { TargetEvent } from "com/objectkit/scriptex/mock/event/TargetEvent"
 /**
  * The key used to access the hidden parameter state Map
  * @private
+ * @constant
+ * @ignore
  * @type {Symbol}
  */
 const viewModelKey= Symbol()
@@ -22,6 +24,7 @@ const viewModelKey= Symbol()
 /**
  * A conveneince property injector
  * @private
+ * @ignore
  * @param  {VirtualScripter} target [description]
  * @param  {Object obj    [description]
  * @return {boolean}        [description]

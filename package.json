@@ -1,6 +1,6 @@
 {
   "name": "@objectkit/scriptex.mock",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "A mock object library for the Scripter MIDI-FX Plugin",
   "type": "module",
   "main": "./lib/scriptex.mock.js",

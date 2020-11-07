@@ -1,5 +1,5 @@
 # @objectkit/scriptex.mock
-> A mocking library for testing [Scriptex MIDI plugins](https://github.com/objectkit/scriptex).
+> A mocking library for testing [Scriptex plugins](https://github.com/objectkit/scriptex).
 
 ## Purpose
 A bare bones set of interfaces and actors to mock the Scripter MIDI-FX Plugin environment.
@@ -70,28 +70,28 @@ Then run your tests it in an emulated Scripter staging environment:
 import { PitchBend, VirtualScripterEnvironment } from "@objectkit/scriptex.mock"
 import { Microtune } from "scriptex.plugin.microtuner"
 
-describe(`Microtune Integration`, () => {
+const virtual= new VirtualScripterEnvironment(global)
+const sandbox= sinon.createSandbox()
 
-  const virtual= new VirtualScripterEnvironment(global)
-  const sandbox= sinon.createSandbox()
+describe(`Microtuner Integration`, () => {
 
   beforeEach(() => {
-    virtual.install()
+    virtual.applyEnvironment()
   })
 
   afterEach(() => {
-    virtual.restore()
+    virtual.unapplyEnvironment()
     sandbox.restore()
   })
 
-  describe(`Given MicrotunePlugin is integrated with Scripter`, () => {
+  describe(`Given Microtuner is integrated with Scripter`, () => {
     describe(`When SetParameter sets the value of #microtuning`, () => {
       describe(`Then #microtuning sets the value of PitchBend#value`, () => {
         specify(`And the PitchBend is immediately sent.`, () => {
 
-          MicrotunePlugin.CONFIGURABLE= true
+          Microtuner.CONFIGURABLE= true
 
-          const { plugin, system } = virtual.deployPlugin(MicrotunePlugin)
+          const { plugin, system } = virtual.deployPlugin(Microtuner)
           const { SendMIDIEventNow, ParameterChanged, Trace }= sandbox.spy(system)          
           const [ { minValue, maxValue, defaultValue } ]= plugin.params
           const { applyPitchBend, onParam }= sandbox.spy(plugin)

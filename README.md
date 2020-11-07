@@ -68,30 +68,30 @@ export { Microtuner }
 Then run your tests it in an emulated Scripter staging environment:
 ```js
 import { PitchBend, VirtualScripterEnvironment } from "@objectkit/scriptex.mock"
-import { Microtune } from "scriptex.plugin.microtuner"
+import { Microtuner } from "scriptex.plugin.microtuner"
 
-describe(`Microtune Integration`, () => {
+describe(`Microtuner Integration`, () => {
 
   const virtual= new VirtualScripterEnvironment(global)
   const sandbox= sinon.createSandbox()
 
   beforeEach(() => {
-    virtual.install()
+    virtual.applyEnvironment()
   })
 
   afterEach(() => {
-    virtual.restore()
-    sandbox.restore()
+    sandbox.restore()  
+    virtual.unapplyEnvironment()
   })
 
-  describe(`Given MicrotunePlugin is integrated with Scripter`, () => {
+  describe(`Given Microtuner is integrated with Scripter`, () => {
     describe(`When SetParameter sets the value of #microtuning`, () => {
       describe(`Then #microtuning sets the value of PitchBend#value`, () => {
         specify(`And the PitchBend is immediately sent.`, () => {
 
-          MicrotunePlugin.CONFIGURABLE= true
+          Microtuner.CONFIGURABLE= true
 
-          const { plugin, system } = virtual.deployPlugin(MicrotunePlugin)
+          const { plugin, system } = virtual.deployPlugin(Microtuner)
           const { SendMIDIEventNow, ParameterChanged, Trace }= sandbox.spy(system)          
           const [ { minValue, maxValue, defaultValue } ]= plugin.params
           const { applyPitchBend, onParam }= sandbox.spy(plugin)
@@ -112,9 +112,9 @@ describe(`Microtune Integration`, () => {
                       , SendMIDIEventNow
               )
 
-              const { lastCall: { firstArg } }= SendMIDIEventNow
-              assert.instanceOf(firstArg, PitchBend)
-              assert.strictEqual(firstArg.value, val)
+              const { lastCall: { firstArg: pitchBend } }= SendMIDIEventNow
+              assert.instanceOf(pitchBend, PitchBend)
+              assert.strictEqual(pitchBend.value, val)
               assert.strictEqual(GetParameter(0), val)
             }
           }

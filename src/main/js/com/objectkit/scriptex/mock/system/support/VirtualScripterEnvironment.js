@@ -82,6 +82,7 @@ class VirtualScripterEnvironment {
    * @see [#applyEnvironment]{@link VirtualScripterEnvironment#applyEnvironment}
    * @see [#unapplyEnvironment]{@link VirtualScripterEnvironment#unapplyEnvironment}
    * @see [#target]{@link VirtualScripterEnvironment#target}
+   * @throws "BadTarget"
    */
   constructor (target) {
     this.target= target
@@ -115,10 +116,6 @@ class VirtualScripterEnvironment {
 
     if (null == val || `object` !== typeof(val))
       throw new TypeError(`BadTarget: ${val}`)
-
-    /* globals console, global */
-    if (global === val)
-      console.warn(`VirtualScripterEnvironment is now using global scope as its environment`)
 
     this._target= val
   }

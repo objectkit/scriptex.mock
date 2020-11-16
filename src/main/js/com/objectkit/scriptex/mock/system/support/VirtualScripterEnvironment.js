@@ -107,15 +107,16 @@ class VirtualScripterEnvironment {
    *
    * @type {Object}
    * @throws "TargetAlreadyApplied" the existing #target is in use
-   * @throws "BadTarget" #target must be an instanceof of Object
+   * @throws "TargetMustBeExtensible" #target must be an instanceof of Object
    * @throws "TargetMissing" if #target is accessed before being set
    */
   set target (val) {
     if (this.applied)
       throw new Error(`TargetAlreadyApplied`)
 
-    if (null == val || `object` !== typeof(val))
-      throw new TypeError(`BadTarget: ${val}`)
+    /* extensibility */
+    if (!(Object.isExtensible(val)))
+      throw new TypeError(`TargetMustBeExtensible: ${val}`)
 
     this._target= val
   }

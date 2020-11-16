@@ -29,13 +29,27 @@ describe(`VirtualScripterEnvironment`, () => {
 
   describe(`new VirtualScripterEnvironment(target:Object)`, () => {
     context(`Given a non-object is passed to the "target" parameter`, () => {
-      specify(`Then "BadTarget" is thrown`, () => {
-        assert.throws(() => { new VirtualScripterEnvironment(undefined) }, `BadTarget` )
+      specify(`Then "TargetMustBeExtensible" is thrown`, () => {
+        assert.throws(() => { new VirtualScripterEnvironment(undefined) }, `TargetMustBeExtensible` )
       })
     })
   })
 
-  describe(`#target and #applied`, () => {
+  describe(`#target`, () => {
+
+    context(`When #target is set to a non extensible object`, () => {
+      context(`Then a "TargetMustBeExtensible" error is thrown`, () => {
+        const target= new Object()
+
+        assert.isExtensible(target)
+        assert.doesNotThrow(() => new VirtualScripterEnvironment(target))
+
+        Object.preventExtensions(target)
+        assert.isNotExtensible(target)
+        assert.throws(() => new VirtualScripterEnvironment(target), "TargetMustBeExtensible")
+      })
+    })
+
     context(`Given #target is set and #applied is true`, () => {
       context(`When #target is set again`, () => {
         specify(`Then a "TargetAlreadyApplied" error is thrown`, () => {

@@ -54,6 +54,7 @@ describe(`Microtuner Integration`, () => {
   const sandbox= sinon.createSandbox()
 
   beforeEach(() => {
+<<<<<<< HEAD
     /* pre-test: decorate the virtual target, i.e. global scope in this test */
     virtual.applyEnvironment()  
   })
@@ -77,6 +78,28 @@ describe(`Microtuner Integration`, () => {
         const [ { minValue, maxValue, defaultValue } ]= plugin.parameters
         const { applyPitchBend, onParameter }= sandbox.spy(plugin)
         const { send } = sandbox.spy(Event.prototype )
+=======
+    virtual.applyEnvironment()
+  })
+
+  afterEach(() => {
+    sandbox.restore()  
+    virtual.unapplyEnvironment()
+  })
+
+  describe(`Given Microtuner is integrated with Scripter`, () => {
+    describe(`When SetParameter sets the value of #microtuning`, () => {
+      describe(`Then #microtuning sets the value of PitchBend#value`, () => {
+        specify(`And the PitchBend is immediately sent.`, () => {
+
+          Microtuner.CONFIGURABLE= true
+
+          const { plugin, system } = virtual.deployPlugin(Microtuner)
+          const { SendMIDIEventNow, ParameterChanged, Trace }= sandbox.spy(system)          
+          const [ { minValue, maxValue, defaultValue } ]= plugin.params
+          const { applyPitchBend, onParam }= sandbox.spy(plugin)
+          const { send } = sandbox.spy(Event.prototype )
+>>>>>>> 657e115b5b4cda3162fe54ad0c716889066fcb39
 
         /* emulated `Run Script` to setup the parameter view */
         UpdatePluginParameters()
@@ -94,10 +117,18 @@ describe(`Microtuner Integration`, () => {
                     , SendMIDIEventNow
             )
 
+<<<<<<< HEAD
             const { lastCall: { firstArg:pitchBend } }= SendMIDIEventNow
             assert.instanceOf(pitchBend, PitchBend)
             assert.strictEqual(pitchBend.value, val)
             assert.strictEqual(GetParameter(0), val)
+=======
+              const { lastCall: { firstArg: pitchBend } }= SendMIDIEventNow
+              assert.instanceOf(pitchBend, PitchBend)
+              assert.strictEqual(pitchBend.value, val)
+              assert.strictEqual(GetParameter(0), val)
+            }
+>>>>>>> 657e115b5b4cda3162fe54ad0c716889066fcb39
           }
         }
 

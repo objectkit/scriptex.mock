@@ -1,6 +1,9 @@
 # @objectkit/scriptex.mock
 > A collection of test interfaces and helpers to mock the Scripter MIDI-FX Plugin environment.
 
+## Documentation
+Please refer to [specs](https://github.com/objectkit/scriptex.mock/wiki/Specs) for more information.
+
 ## Installation
 ```bash
 npm i @objectkit/scriptex.mock
@@ -106,5 +109,6 @@ describe(`Microtuner Integration`, () => {
   })
 })
 ```
-## Donate
+
+## Donations
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/paypalme/objectkit)
